@@ -1,31 +1,44 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 class Contact extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       password: 'swordfish',
-      authorized: false
+      authorized: false,
+      epassword: '',
     };
-    this.authorize = this.authorize.bind(this);
   }
 
-  authorize(e) {
-    const password = e.target.querySelector(
-      'input[type="password"]').value;
-    const auth = password == this.state.password;
-    alert(auth);
-    this.setState({
-      authorized: auth
-    });
+
+  getPassword = e=>{
+   this.setState({
+    epassword: e.target.value,
+   })
   }
+
+  
+
+  authorize = event => {
+
+    console.log(this.state.epassword === this.state.password);
+
+    if(this.state.epassword === this.state.password){
+        this.setState({
+            authorized: true,
+          });
+          console.log(true);
+    }
+event.preventDefault();
+  }
+
 
   render() {
     const login = (
       <form action="#">
-        <input type="password" placeholder="Password"/>
-        <input onSubmit={this.authorize} type="submit"/>
+        <input value={this.state.epassword} onChange={this.getPassword} type="password" placeholder="Password"/>
+        <input onClick={this.authorize} type="submit"/>
       </form>
     );
     const contactInfo = (
@@ -47,7 +60,5 @@ class Contact extends React.Component {
   }
 }
 
-ReactDOM.render(
-  <Contact />, 
-  document.getElementById('app')
-);
+var root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Contact />);
